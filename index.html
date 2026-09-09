@@ -28,8 +28,8 @@ const SITE_SETTINGS = {
   'workingHours': 'ежедневно 08:00-22:00',
   'responseTime': '5 минут',
   'metrikaMessengerVisible': false,
-  'maxEnabled': false,
-  'maxUrl': ""
+  'maxEnabled': true,
+  'maxUrl': "https://web.max.ru/:push?userId=25788893"
 };
 const PSYCHIC_NAME=SITE_SETTINGS.psychicName||'Татьяна Георгиевна';
 const PHONE_DIGITS=(SITE_SETTINGS.phoneNumber||'').replace(/\D/g,'');
@@ -1594,9 +1594,9 @@ ym(SITE_SETTINGS.yandexMetrikaId,"init",{clickmap:true,trackLinks:true,accurateT
         if (url.pathname !== '/:push') return '';
         const userId = String(url.searchParams.get('userId') || '').trim();
         if (!/^\d+$/.test(userId)) return '';
-        // MAX documents app links on max.ru. Android/iOS can hand this HTTPS
-        // URL to the installed client while browsers retain a valid fallback.
-        return 'https://max.ru/:push?userId=' + encodeURIComponent(userId);
+        // Native MAX resolves the contact identifier through the uid parameter.
+        // The web client uses userId, so keep the stored URL for desktop.
+        return 'https://max.ru/:push?uid=' + encodeURIComponent(userId);
       } catch (_) { return ''; }
     }
 
